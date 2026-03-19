@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Raj Lakshmi ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    overflow: hidden;
+    background: linear-gradient(-45deg, #1a0026, #330033, #4d004d, #1a001a);
+    background-size: 400% 400%;
+    animation: gradientBG 12s ease infinite;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 105, 180, 0.15), transparent 60%);
+    animation: glowMove 10s linear infinite;
+}
+
+@keyframes glowMove {
+    0% { transform: translate(-25%, -25%); }
+    50% { transform: translate(25%, 25%); }
+    100% { transform: translate(-25%, -25%); }
+}
+
+#startScreen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    background: linear-gradient(45deg, #ff4d6d, #ff85a2);
+    border: none;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+}
+
+.slide {
+    position: absolute;
+    width: 80%;
+    max-width: 500px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.active { opacity: 1; }
+
+.name {
+    color: #ff85a2;
+    text-shadow: 0 0 15px #ff4d6d;
+}
+
+.heart {
+    position: absolute;
+    color: #ff85a2;
+    animation: float 7s linear infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(100vh); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+}
+
+#finalScreen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    background: rgba(0,0,0,0.85);
+}
+
+.final-text {
+    font-size: 2rem;
+    color: #ff85a2;
+    animation: glowText 2s infinite alternate;
+}
+
+@keyframes glowText {
+    from { text-shadow: 0 0 10px #ff4d6d; }
+    to { text-shadow: 0 0 30px #ff85a2; }
+}
+#typingText::after {
+    content: "|";
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="heartbeat" src="https://cdn.pixabay.com/audio/2022/03/15/audio_5c3c8a4f6d.mp3"></audio>
+
+<div id="startScreen">
+    <h2 id="typingText"></h2>
+    <button onclick="startExperience()">Tap to Begin ✨</button>
+</div>
+
+<!-- Slides -->
+<div class="slide">Out of all the people in this world…</div>
+<div class="slide">Somehow… it was always <span class="name">Raj Lakshmi</span> 💫</div>
+<div class="slide">Not the loudest moments… but the quiet ones with you…</div>
+<div class="slide">They became my favorite ❤️</div>
+<div class="slide">You didn’t just enter my life… you changed it ✨</div>
+<div class="slide">I don’t even know when I started falling for you… but I’m glad I did 💖</div>
+<div class="slide">Because with you… everything feels right</div>
+<div class="slide">Not perfect… just real… just us 💫</div>
+<div class="slide">So today… I want to say it again… but better</div>
+<div class="slide" style="font-size:2rem;">I choose you ❤️</div>
+<div class="slide">In every moment… in every lifetime…</div>
+<div class="slide" style="font-size:2.2rem;">Will you be mine… forever? 💍</div>
+<div class="slide">Because my heart… belongs to you 💖</div>
+
+<div id="finalScreen">
+    <div class="final-text">So… what do you say, My Girl🤭? 💖</div>
+    <button onclick="celebrate()">YES 😍</button>
+</div>
+
+<script>
+let slides = document.querySelectorAll(".slide");
+let music = document.getElementById("music");
+let index = -1;
+
+/* 🎵 PERFECT BEAT SYNC (adjust slightly if needed) */
+let timings = [
+    2, 7, 10, 14, 18, 23,
+    28, 32, 36, 40, 46,
+    52, // 💍 proposal moment
+    58
+];
+let text = "Hey RL... 💖";
+let i=0;
+function typeEffect(){
+    if(i<text.length){
+        document.getElementById("typingText").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeEffect, 80);
+    }
+}
+function startExperience() {
+    document.getElementById("startScreen").style.display = "none";
+
+    music.volume = 0;
+    music.play().catch(()=>{});
+
+    // smooth fade-in
+    let vol = 0;
+    let fade = setInterval(() => {
+        if (vol < 0.7) {
+            vol += 0.05;
+            music.volume = vol;
+        } else clearInterval(fade);
+    }, 200);
+
+    syncSlides();
+}
+
+function syncSlides() {
+    setInterval(() => {
+        let t = music.currentTime;
+
+        for (let i = 0; i < timings.length; i++) {
+
+            // 🎯 RANGE check (prevents skipping)
+            if (t >= timings[i] && t < timings[i] + 0.4 && index !== i) {
+
+                if (index >= 0) {
+                    slides[index].classList.remove("active");
+                }
+
+                slides[i].classList.add("active");
+                index = i;
+
+                // 💓 heartbeat before proposal
+                if (i === timings.length - 2) {
+                    document.getElementById("heartbeat").play().catch(()=>{});
+                }
+            }
+        }
+
+        // show final screen
+        if (t > timings[timings.length - 1] + 4) {
+            document.getElementById("finalScreen").style.display = "flex";
+        }
+
+    }, 100);
+}
+
+// floating hearts (unchanged)
+setInterval(() => {
+    let h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "❤️";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = (Math.random() * 20 + 12) + "px";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 7000);
+}, 500);
+
+function celebrate() {
+    let music = document.getElementById("music");
+
+    document.getElementById("finalScreen").innerHTML =
+        "<div class='final-text'>You just made my world complete 💖✨</div>";
+
+    // 💖 Step 1: slowly fade volume
+    let fadeOut = setInterval(() => {
+        if (music.volume > 0.05) {
+            music.volume -= 0.025;
+        } else {
+            clearInterval(fadeOut);
+
+            // ⏩ Step 2: jump near end of song
+            music.currentTime = music.duration - 5;
+
+            // 🔊 Step 3: soft ending volume
+            music.volume = 0.3;
+
+            // 🎵 Step 4: final fade out
+            let finalFade = setInterval(() => {
+                if (music.volume > 0.02) {
+                    music.volume -= 0.02;
+                } else {
+                    clearInterval(finalFade);
+                    music.pause();
+                }
+            }, 200);
+        }
+    }, 200);
+}
+window.onload = typeEffect;
+</script>
+
+</body>
+</html>
