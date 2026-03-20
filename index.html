@@ -133,18 +133,22 @@ button {
     height: 100%;
     top: 0;
     left: 0;
+    position: fixed;
+    inset: 0; /* 🔥 better than width/height */
     display: none;
     z-index: 20;
+    overflow: hidden;
 }
 
 .curtain {
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    top: 0;
     background: linear-gradient(to bottom, #2b0000, #660000);
     box-shadow: inset -10px 0 20px rgba(0,0,0,0.5);
     transition: transform 2.5s cubic-bezier(0.77, 0, 0.18, 1);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50vw; /* 🔥 responsive width */
+    height: 100dvh; /* 🔥 dynamic height (better for mobile) */
 }
 
 /* add folds effect */
