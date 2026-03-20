@@ -6,6 +6,13 @@
 <title>For Raj Lakshmi ❤️</title>
 
 <style>
+* {
+    box-sizing: border-box; /* 🔥 important for scaling */
+}
+
+html {
+    font-size: clamp(14px, 2.5vw, 18px); /* 🔥 base scaling */
+}
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
@@ -50,8 +57,8 @@ body::before {
 }
 
 button {
-    padding: 15px 30px;
-    font-size: 18px;
+    padding: clamp(10px, 3vw, 15px) clamp(20px, 6vw, 30px);
+    font-size: 1rem;
     background: linear-gradient(45deg, #ff4d6d, #ff85a2);
     border: none;
     border-radius: 30px;
@@ -59,22 +66,26 @@ button {
     cursor: pointer;
 }
 
-.slide {
+ .slide {
     position: absolute;
-    width: 80%;
-    max-width: 500px;
+
+    width: min(90vw, 500px); /* 🔥 auto fit */
+    padding: clamp(15px, 4vw, 25px);
+
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+
+    background: rgba(0,0,0,0.65);
     border-radius: 20px;
-    padding: 25px;
-    text-align: center;
-    font-size: 1.6rem;
+
+    font-size: 1.2rem; /* scales from html font-size */
     line-height: 1.5;
+
+    text-align: center;
+
     opacity: 0;
-    transition: opacity 1.5s ease-in-out;
+    transition: opacity 1.2s ease;
 }
 
 .active { opacity: 1; }
@@ -147,8 +158,11 @@ button {
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 50vw; /* 🔥 responsive width */
-    height: 100dvh; /* 🔥 dynamic height (better for mobile) */
+    width: 50%; /* 🔥 responsive width */
+    height: 100%; 
+    will-change: transform;
+    transform: translateZ(0);
+    transition: transform 1.5s ease;/* 🔥 dynamic height (better for mobile) */
 }
 
 /* add folds effect */
@@ -191,8 +205,8 @@ button {
     text-align: center;
     opacity: 0;
     color: #ffb3c6;
-    font-size: 1.4rem;
-    padding: 20px;
+    font-size: 1rem;
+    padding: 5vw;
     transition: opacity 2s ease 2s;
 }
 
@@ -202,7 +216,7 @@ button {
 }
 
 #finalMessage h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 20px;
     text-shadow: 0 0 20px #ff4d6d;
 }
