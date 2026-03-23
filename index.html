@@ -11,7 +11,7 @@
 }
 
 html {
-    font-size: clamp(14px, 2.5vw, 18px); /* 🔥 base scaling */
+    font-size: clamp(12px, 2vw, 18px); /* 🔥 improved base scaling for smaller screens */
 }
 body {
     margin: 0;
@@ -57,20 +57,26 @@ body::before {
 }
 
 button {
-    padding: clamp(10px, 3vw, 15px) clamp(20px, 6vw, 30px);
-    font-size: 1rem;
+    padding: clamp(12px, 4vw, 15px) clamp(25px, 8vw, 30px);
+    font-size: clamp(1rem, 3vw, 1.1rem);
     background: linear-gradient(45deg, #ff4d6d, #ff85a2);
     border: none;
     border-radius: 30px;
     color: white;
     cursor: pointer;
+    min-width: 120px;
+}
+
+h2 {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    margin-bottom: 20px;
 }
 
  .slide {
     position: absolute;
 
-    width: min(90vw, 500px); /* 🔥 auto fit */
-    padding: clamp(15px, 4vw, 25px);
+    width: min(95vw, 500px); /* 🔥 increased max width for better mobile fit */
+    padding: clamp(15px, 5vw, 25px);
 
     top: 50%;
     left: 50%;
@@ -79,7 +85,7 @@ button {
     background: rgba(0,0,0,0.65);
     border-radius: 20px;
 
-    font-size: 1.2rem; /* scales from html font-size */
+    font-size: clamp(1rem, 4vw, 1.2rem); /* 🔥 responsive font size */
     line-height: 1.5;
 
     text-align: center;
@@ -120,14 +126,37 @@ button {
 }
 
 .final-text {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 6vw, 2rem);
     color: #ff85a2;
     animation: glowText 2s infinite alternate;
+    padding: 0 5vw;
+    transition: all 0.6s ease; /* smooth transitions for surprise effect */
+    transform-origin: center;
 }
 
 @keyframes glowText {
     from { text-shadow: 0 0 10px #ff4d6d; }
     to { text-shadow: 0 0 30px #ff85a2; }
+}
+
+/* Surprise celebration animation */
+@keyframes surpriseGlow {
+    0% { 
+        text-shadow: 0 0 10px #ff4d6d, 0 0 20px #ff85a2; 
+        transform: scale(1);
+    }
+    50% { 
+        text-shadow: 0 0 40px #ff4d6d, 0 0 80px #ff85a2, 0 0 120px #ffb3c6; 
+        transform: scale(1.05);
+    }
+    100% { 
+        text-shadow: 0 0 30px #ff4d6d, 0 0 60px #ff85a2; 
+        transform: scale(1);
+    }
+}
+
+.final-text.celebrating {
+    animation: surpriseGlow 1.5s ease-in-out;
 }
 #typingText::after {
     content: "|";
@@ -205,7 +234,7 @@ button {
     text-align: center;
     opacity: 0;
     color: #ffb3c6;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 3vw, 1rem);
     padding: 5vw;
     transition: opacity 2s ease 2s;
 }
@@ -216,7 +245,7 @@ button {
 }
 
 #finalMessage h1 {
-    font-size: 2rem;
+    font-size: clamp(1.8rem, 7vw, 2rem);
     margin-bottom: 20px;
     text-shadow: 0 0 20px #ff4d6d;
 }
@@ -242,6 +271,33 @@ button {
     42%  { transform: scale(1.25); }
     70%  { transform: scale(1); }
     100% { transform: scale(1); }
+}
+
+/* 📱 Mobile optimizations */
+@media (max-width: 480px) {
+    .slide {
+        width: 95vw;
+        padding: 20px;
+    }
+    
+    #finalMessage {
+        padding: 10vw 5vw;
+    }
+    
+    .curtain {
+        width: 50%;
+    }
+}
+
+@media (max-width: 320px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .slide {
+        width: 98vw;
+        padding: 15px;
+    }
 }
 </style>
 </head>
@@ -269,9 +325,9 @@ button {
 <div class="slide">Because with you… everything feels right</div>
 <div class="slide">Not perfect… just real… just us 💫</div>
 <div class="slide">So today… I want to say it again… but better</div>
-<div class="slide" style="font-size:2rem;">I choose you ❤️</div>
+<div class="slide" style="font-size: clamp(1.5rem, 6vw, 2rem);">I choose you ❤️</div>
 <div class="slide">In every moment… in every lifetime…</div>
-<div class="slide" style="font-size:2.2rem;">Will you be mine… forever? 💍</div>
+<div class="slide" style="font-size: clamp(1.8rem, 7vw, 2.2rem);">Will you be mine… forever? 💍</div>
 <div class="slide">Because my heart… belongs to you 💖</div>
 
 <div id="finalScreen">
@@ -349,7 +405,7 @@ function syncSlides() {
     }, 100);
 }
 
-// floating hearts (unchanged)
+// floating hearts (optimized for mobile)
 setInterval(() => {
     let h = document.createElement("div");
     h.className = "heart";
@@ -358,7 +414,7 @@ setInterval(() => {
     h.style.fontSize = (Math.random() * 20 + 12) + "px";
     document.body.appendChild(h);
     setTimeout(() => h.remove(), 7000);
-}, 500);
+}, 800); // increased interval for better mobile performance
 function showCurtain() {
     let curtain = document.getElementById("curtainContainer");
     curtain.style.display = "block";
@@ -369,16 +425,46 @@ function showCurtain() {
 }
 function celebrate() {
     let music = document.getElementById("music");
+    let finalText = document.querySelector(".final-text");
 
-    document.getElementById("finalScreen").innerHTML =
-        "<div class='final-text'>You just made my world complete 💖✨</div>";
+    // 🎉 Step 1: Smooth text transition with surprise effect
+    finalText.style.transition = "all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)"; // bouncy effect
+    finalText.style.transform = "scale(0.8)";
+    finalText.style.opacity = "0";
 
-    // 🎬 Step 1: Start curtain EARLY
+    setTimeout(() => {
+        finalText.innerHTML = "You just made my world complete 💖✨";
+        finalText.style.transform = "scale(1.1)";
+        finalText.style.opacity = "1";
+        finalText.style.color = "#ff85a2";
+        finalText.style.textShadow = "0 0 30px #ff4d6d, 0 0 60px #ff85a2";
+
+        // Add surprise animation class
+        finalText.classList.add("celebrating");
+
+        // Add a subtle bounce effect
+        setTimeout(() => {
+            finalText.style.transform = "scale(1)";
+        }, 300);
+    }, 400);
+
+    // Remove the YES button smoothly
+    let yesButton = document.querySelector("#finalScreen button");
+    if (yesButton) {
+        yesButton.style.transition = "all 0.5s ease";
+        yesButton.style.opacity = "0";
+        yesButton.style.transform = "translateY(20px)";
+        setTimeout(() => {
+            yesButton.style.display = "none";
+        }, 500);
+    }
+
+    // 🎬 Step 2: Start curtain with delay for surprise
     setTimeout(() => {
         showCurtain();
-    }, 800); // slight delay for emotional pause
+    }, 1200); // longer delay to let the text change sink in
 
-    // 🎵 Step 2: Smooth slow fade (LONGER + CONTINUOUS)
+    // 🎵 Step 3: Smooth slow fade (LONGER + CONTINUOUS)
     let fadeOut = setInterval(() => {
         if (music.volume > 0.02) {
             music.volume -= 0.01; // slower fade (more cinematic)
@@ -388,12 +474,12 @@ function celebrate() {
         }
     }, 300);
 
-    // ⏩ Step 3: Move near ending but DON'T jump too harshly
+    // ⏩ Step 4: Move near ending but DON'T jump too harshly
     setTimeout(() => {
         if (music.duration - music.currentTime > 8) {
             music.currentTime = music.duration - 20;
         }
-    }, 1500);
+    }, 2000);
 }
 window.onload = typeEffect;
 </script>
