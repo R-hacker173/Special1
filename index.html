@@ -169,29 +169,27 @@ h2 {
 }
 #curtainContainer {
     position: fixed;
-    width: 100%;
-    height: 100%;
+    width: 100%; /* Use percentage for better compatibility */
+    height: 100%; /* Use percentage for better compatibility */
     top: 0;
     left: 0;
-    position: fixed;
-    inset: 0; /* 🔥 better than width/height */
     display: none;
-    z-index: 20;
+    z-index: 9999; /* Higher z-index to ensure it's on top */
     overflow: hidden;
 }
 
 .curtain {
     background: linear-gradient(to bottom, #2b0000, #660000);
+    background-color: #8B0000; /* More visible solid fallback color */
     box-shadow: inset -10px 0 20px rgba(0,0,0,0.5);
-    transition: transform 2.5s cubic-bezier(0.77, 0, 0.18, 1);
+    transition: transform 2.5s cubic-bezier(0.77, 0, 0.18, 1), opacity 0.5s ease;
     position: absolute;
     top: 0;
-    bottom: 0;
-    width: 50%; /* 🔥 responsive width */
-    height: 100%; 
+    width: 50%; /* Use percentage for better compatibility */
+    height: 100%; /* Use percentage for better compatibility */
     will-change: transform;
     transform: translateZ(0);
-    transition: transform 1.5s ease;/* 🔥 dynamic height (better for mobile) */
+    opacity: 0;
 }
 
 /* add folds effect */
@@ -218,12 +216,23 @@ h2 {
     transform: translateX(100%);
 }
 
+#curtainContainer.show {
+    /* Prevent body scroll during curtain animation on mobile */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
 #curtainContainer.show .left {
     transform: translateX(0);
+    opacity: 1;
 }
 
 #curtainContainer.show .right {
     transform: translateX(0);
+    opacity: 1;
 }
 
 #finalMessage {
@@ -282,10 +291,45 @@ h2 {
     
     #finalMessage {
         padding: 10vw 5vw;
+        font-size: clamp(0.8rem, 4vw, 1rem);
+    }
+    
+    #finalMessage h1 {
+        font-size: clamp(1.5rem, 8vw, 2rem);
+        margin-bottom: 15px;
+    }
+    
+    #finalMessage p {
+        font-size: clamp(0.85rem, 3.5vw, 1rem);
+        line-height: 1.4;
     }
     
     .curtain {
-        width: 50%;
+        width: 50%; /* Use percentage for better mobile compatibility */
+        /* Ensure curtains cover full height on mobile */
+        height: 100%;
+        top: 0;
+    }
+    
+    /* Ensure curtains meet perfectly in center on mobile */
+    .curtain.left {
+        left: 0;
+        transform: translateX(-100%);
+    }
+    
+    .curtain.right {
+        right: 0;
+        transform: translateX(100%);
+    }
+    
+    /* Adjust curtain folds for mobile */
+    .curtain::before {
+        background: repeating-linear-gradient(
+            to right,
+            rgba(255,255,255,0.03) 0px,
+            rgba(0,0,0,0.3) 8px,
+            rgba(255,255,255,0.03) 16px
+        );
     }
 }
 
@@ -298,7 +342,25 @@ h2 {
         width: 98vw;
         padding: 15px;
     }
+    
+    #finalMessage {
+        padding: 15vw 5vw;
+        top: 45%;
+    }
+    
+    .curtain {
+        width: 50%; /* Maintain exact center meeting on very small screens */
+        /* Ensure smooth animation on very small screens */
+        transition: transform 2s ease;
+    }
+    
+    /* Better final message positioning on very small screens */
+    #finalMessage {
+        top: 45%;
+        transform: translateY(-45%);
+    }
 }
+
 </style>
 </head>
 
@@ -418,6 +480,9 @@ setInterval(() => {
 function showCurtain() {
     let curtain = document.getElementById("curtainContainer");
     curtain.style.display = "block";
+
+    // Force reflow for better mobile rendering
+    curtain.offsetHeight;
 
     setTimeout(() => {
         curtain.classList.add("show");
